@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>奥沙达（Arxada）× 钉钉 数字化解决方案 Demo</title>
+<style>
+:root{--blue:#0089FF;--dark:#1a1a2e;--light:#f5f7fa;--green:#10b981;--gray:#6b7280}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--light);color:#333;line-height:1.6}
+.header{background:linear-gradient(135deg,var(--dark),#16213e);color:#fff;padding:40px 0;text-align:center}
+.header h1{font-size:2.2em;margin-bottom:8px}.header .sub{font-size:1.1em;opacity:.85}
+.header .badge{display:inline-block;background:var(--blue);padding:4px 16px;border-radius:20px;font-size:.85em;margin-top:12px}
+.nav{display:flex;justify-content:center;gap:8px;padding:20px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.06);position:sticky;top:0;z-index:100;flex-wrap:wrap}
+.nav button{padding:10px 24px;border:2px solid var(--blue);background:#fff;color:var(--blue);border-radius:8px;cursor:pointer;font-size:.95em;font-weight:600;transition:all .3s}
+.nav button.active,.nav button:hover{background:var(--blue);color:#fff}
+.section{display:none;max-width:1100px;margin:24px auto;padding:0 20px;animation:fadeIn .4s ease}
+.section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card{background:#fff;border-radius:12px;padding:28px;margin-bottom:20px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.card h2{color:var(--dark);font-size:1.4em;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.card h2 .icon{width:32px;height:32px;background:var(--blue);color:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1em}
+.card h3{color:var(--dark);font-size:1.1em;margin:16px 0 10px}
+.flow{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap;margin:24px 0}
+.flow-step{background:#fff;border:2px solid var(--blue);border-radius:12px;padding:16px 20px;text-align:center;min-width:140px}
+.flow-step.hl{background:var(--blue);color:#fff}
+.flow-step .st{font-weight:700;font-size:.95em}.flow-step .sd{font-size:.8em;margin-top:4px;opacity:.85}
+.flow-arrow{font-size:1.5em;color:var(--blue);padding:0 8px}
+.demo-area{background:#f0f4ff;border:2px dashed var(--blue);border-radius:12px;padding:24px;margin:20px 0}
+.demo-area h3{color:var(--blue);margin-bottom:12px}
+.demo-btn{background:var(--blue);color:#fff;border:none;padding:12px 28px;border-radius:8px;cursor:pointer;font-size:1em;font-weight:600;transition:all .3s}
+.demo-btn:hover{background:#006fd6;transform:translateY(-1px)}
+.demo-output{margin-top:16px;padding:16px;background:#fff;border-radius:8px;font-family:"SF Mono","Consolas",monospace;font-size:.85em;min-height:60px;white-space:pre-wrap;border-left:4px solid var(--blue)}
+table{width:100%;border-collapse:collapse;margin:16px 0}
+th{background:var(--blue);color:#fff;padding:12px 16px;text-align:left;font-weight:600}
+td{padding:12px 16px;border-bottom:1px solid #e5e7eb}tr:hover td{background:#f0f7ff}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:20px 0}
+.mc{background:#fff;border-radius:10px;padding:20px;text-align:center;border-top:4px solid var(--blue)}
+.mv{font-size:2em;font-weight:800;color:var(--blue)}.ml{font-size:.85em;color:var(--gray);margin-top:4px}
+.md{font-size:.8em;color:var(--green);font-weight:600;margin-top:4px}
+.timeline{position:relative;padding-left:30px;margin:20px 0}
+.timeline::before{content:'';position:absolute;left:10px;top:0;bottom:0;width:3px;background:var(--blue);border-radius:2px}
+.ti{position:relative;margin-bottom:20px}
+.ti::before{content:'';position:absolute;left:-24px;top:6px;width:12px;height:12px;background:var(--blue);border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px var(--blue)}
+.ti.done::before{background:var(--green);box-shadow:0 0 0 2px var(--green)}
+.tp{font-weight:700;color:var(--dark)}.td{font-size:.9em;color:var(--gray);margin-top:4px}
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin:20px 0}
+.sc{background:#fff;border-radius:10px;padding:20px;border-left:4px solid var(--blue);transition:transform .2s;cursor:pointer}
+.sc:hover{transform:translateY(-3px);box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.sc .tag{display:inline-block;background:#e0f2fe;color:var(--blue);padding:2px 10px;border-radius:12px;font-size:.75em;font-weight:600;margin-bottom:8px}
+.sc h4{color:var(--dark);margin-bottom:6px}.sc p{font-size:.85em;color:var(--gray)}
+.sync-demo{display:flex;align-items:center;justify-content:space-around;padding:30px}
+.sb{text-align:center;padding:20px;border-radius:12px;min-width:160px}
+.sb.ad{background:#1e3a5f;color:#fff}.sb.dd{background:var(--blue);color:#fff}
+.sb .bi{font-size:2.5em;margin-bottom:8px}.sb .bl{font-weight:700}
+.sb .bc{font-size:2em;font-weight:800;margin:8px 0}
+.sp{display:flex;flex-direction:column;align-items:center;gap:8px}
+.sp .pl{width:120px;height:4px;background:#ddd;border-radius:2px;overflow:hidden}
+.sp .pp{height:100%;background:var(--green);width:0;transition:width .5s;border-radius:2px}
+.sp .ps{font-size:.8em;color:var(--gray);font-weight:600}
+.footer{text-align:center;padding:30px;color:var(--gray);font-size:.85em;margin-top:40px}
+@media(max-width:768px){.header h1{font-size:1.5em}.flow{flex-direction:column}.flow-arrow{transform:rotate(90deg)}.sync-demo{flex-direction:column;gap:16px}}
+</style>
+</head>
+<body>
+<div class="header">
+<h1>🏭 奥沙达 × 钉钉</h1>
+<div class="sub">特种化学品制造业数字化解决方案交互演示</div>
+<div class="badge">Demo v1.0 · 2026年8月3日</div>
+</div>
+<div class="nav">
+<button class="active" onclick="switchTab('ad')">AD域对接</button>
+<button onclick="switchTab('conn')">业务系统连接器</button>
+<button onclick="switchTab('mfg')">制造业场景</button>
+<button onclick="switchTab('roi')">降本提效</button>
+<button onclick="switchTab('road')">实施路线</button>
+</div>
+
+<!-- AD域对接 -->
+<div id="ad" class="section active">
+<div class="card">
+<h2><span class="icon">🔗</span> AD域 ↔ 钉钉通讯录同步</h2>
+<p>将Arxada现有Windows AD域作为唯一身份源，实现组织架构和人员信息自动同步至钉钉，员工使用AD账号即可单点登录钉钉及所有集成系统。</p>
+<h3>同步架构</h3>
+<div class="flow">
+<div class="flow-step"><div class="st">🖥️ AD域控</div><div class="sd">Windows Server<br>OU组织架构</div></div>
+<div class="flow-arrow">→</div>
+<div class="flow-step hl"><div class="st">⚙️ 目录同步服务</div><div class="sd">SCIM/LDAP协议<br>增量+全量同步</div></div>
+<div class="flow-arrow">→</div>
+<div class="flow-step"><div class="st">📱 钉钉通讯录</div><div class="sd">部门/人员/职位<br>实时映射</div></div>
+<div class="flow-arrow">→</div>
+<div class="flow-step"><div class="st">🔐 SSO登录</div><div class="sd">SAML/OIDC<br>一套账号通行</div></div>
+</div>
+</div>
+<div class="card">
+<h2><span class="icon">▶️</span> 模拟同步演示</h2>
+<div class="demo-area">
+<h3>🔄 AD域数据同步到钉钉</h3>
+<p style="margin-bottom:16px;font-size:.9em;color:#666">点击下方按钮，模拟AD域组织架构和人员数据同步至钉钉的完整过程。</p>
+<button class="demo-btn" id="syncBtn" onclick="runSyncDemo()">开始同步</button>
+<div class="sync-demo" id="syncVisual" style="display:none">
+<div class="sb ad"><div class="bi">🖥️</div><div class="bl">AD域</div><div class="bc" id="adCount">126</div><div>用户账户</div></div>
+<div class="sp"><div class="ps" id="syncStatus">等待中...</div><div class="pl"><div class="pp" id="syncProgress"></div></div><div class="ps" id="syncDetail"></div></div>
+<div class="sb dd"><div class="bi">📱</div><div class="bl">钉钉</div><div class="bc" id="ddCount">0</div><div>已同步用户</div></div>
+</div>
+<div class="demo-output" id="syncLog" style="display:none"></div>
+</div>
+</div>
+<div class="card">
+<h2><span class="icon">✅</span> 核心价值</h2>
+<table>
+<tr><th>痛点</th><th>解决效果</th></tr>
+<tr><td>AD与钉钉两套账号，记忆负担重</td><td>SSO单点登录，一套账号通行所有系统</td></tr>
+<tr><td>入转调离需手动维护多套系统</td><td>AD变更自动同步至钉钉，延迟≤5分钟</td></tr>
+<tr><td>组织架构调整滞后，审批链断裂</td><td>实时同步确保审批流始终匹配最新架构</td></tr>
+<tr><td>IT运维重复处理账号问题</td><td>自助密码重置+统一身份源，IT工单减少60%+</td></tr>
+</table>
+</div>
+</div>
+
+<!-- 业务系统连接器 -->
+<div id="conn" class="section">
+<div class="card">
+<h2><span class="icon">🔌</span> 钉钉连接器平台</h2>
+<p>通过钉钉连接器（Connector Hub），将Arxada现有的SAP/ERP、MES、EHS、LIMS等业务系统与钉钉无缝集成，消除数据孤岛。</p>
+<h3>集成蓝图</h3>
+<div class="flow">
+<div class="flow-step hl"><div class="st">📱 钉钉工作台</div><div class="sd">消息/审批/待办<br>数据看板/AI助理</div></div>
+<div class="flow-arrow">↕</div>
+<div class="flow-step"><div class="st">🔌 连接器平台</div><div class="sd">预置+自定义<br>200+系统集成</div></div>
+<div class="flow-arrow">↕</div>
+<div class="flow-step"><div class="st">🏢 业务系统</div><div class="sd">SAP/MES/EHS<br>LIMS/HR/OA</div></div>
+</div>
+</div>
+<div class="card">
+<h2><span class="icon">▶️</span> ERP采购审批闭环演示</h2>
+<div class="demo-area">
+<h3>📋 SAP采购订单 → 钉钉审批 → 回写SAP</h3>
+<p style="margin-bottom:16px;font-size:.9em;color:#666">模拟一笔采购订单从SAP创建到钉钉审批再到结果回写的完整闭环流程。</p>
+<button class="demo-btn" id="erpBtn" onclick="runERPDemo()">模拟采购审批流程</button>
+<div class="demo-output" id="erpLog" style="display:none"></div>
+</div>
+</div>
+<div class="card">
+<h2><span class="icon">▶️</span> MES生产异常上报演示</h2>
+<div class="demo-area">
+<h3>🚨 MES质量异常 → 钉钉告警 → 处理闭环</h3>
+<p style="margin-bottom:16px;font-size:.9em;color:#666">模拟MES检测到质量异常后，通过钉钉推送告警并完成异常处理的全流程。</p>
+<button class="demo-btn" id="mesBtn" onclick="runMESDemo()">模拟异常处理流程</button>
+<div class="demo-output" id="mesLog" style="display:none"></div>
+</div>
+</div>
+<div class="card">
+<h2><span class="icon">📦</span> 支持的集成方式</h2>
+<table>
+<tr><th>类型</th><th>说明</th><th>适用场景</th></tr>
+<tr><td>预置连接器</td><td>SAP/用友/金蝶/MES等开箱即用</td><td>标准ERP/MES/OA系统</td></tr>
+<tr><td>REST API连接器</td><td>自定义HTTP接口对接</td><td>自研系统/第三方SaaS</td></tr>
+<tr><td>数据库直连</td><td>MySQL/SQL Server/Oracle</td><td>数据同步/报表抽取</td></tr>
+<tr><td>消息队列</td><td>RabbitMQ/Kafka</td><td>高并发事件驱动场景</td></tr>
+<tr><td>宜搭连接器</td><td>低代码配置集成</td><td>轻量级业务表单对接</td></tr>
+</table>
+</div>
+</div>
+
+<!-- 制造业场景 -->
+<div id="mfg" class="section">
+<div class="card">
+<h2><span class="icon">🏭</span> 制造业深度场景方案</h2>
+<p>针对Arxada作为特种化学品制造企业的核心业务场景，钉钉提供覆盖生产管理、研发管理、EHS合规的全链路数字化解决方案。</p>
+</div>
+<div class="card">
+<h2><span class="icon">⚙️</span> 生产管理</h2>
+<div class="sg">
+<div class="sc" onclick="showDetail(this,'电子工单：替代纸质工单，工单创建→派发→执行→完工全流程线上化。通过宜搭搭建工单应用，连接器对接MES获取工单状态，工时统计自动化。','宜搭 + MES连接器')"><span class="tag">宜搭 + MES连接器</span><h4>📋 电子工单</h4><p>替代纸质工单，创建→派发→执行→完工全流程线上化</p></div>
+<div class="sc" onclick="showDetail(this,'设备巡检：扫码巡检+NFC打卡，确保巡检到位。异常拍照上传，自动生成巡检报告。数据实时回传EHS系统。','智能填表 + 定位签到')"><span class="tag">智能填表 + 定位签到</span><h4>🔍 设备巡检</h4><p>扫码巡检+NFC打卡，异常拍照上传，报告自动生成</p></div>
+<div class="sc" onclick="showDetail(this,'交接班管理：标准化交接模板，关键工艺参数自动从MES拉取，避免手工抄录错误。交接记录可追溯。','日志 + 群机器人')"><span class="tag">日志 + 群机器人</span><h4>🔄 交接班管理</h4><p>标准化交接模板，关键参数自动从MES拉取</p></div>
+<div class="sc" onclick="showDetail(this,'质量异常处理：8D/CAPA流程线上化，关联MES批次数据。从异常发现→原因分析→纠正措施→效果验证全流程可追踪。','审批 + MES连接器')"><span class="tag">审批 + MES连接器</span><h4>⚠️ 质量异常处理</h4><p>8D/CAPA流程线上化，整改闭环可追踪</p></div>
+<div class="sc" onclick="showDetail(this,'生产看板：实时展示OEE、产量、良率等KPI。数据从MES/SCADA自动采集，异常指标自动预警推送到责任人钉钉。','酷应用 + 数据大屏')"><span class="tag">酷应用 + 数据大屏</span><h4>📊 生产看板</h4><p>实时展示OEE、产量、良率等KPI，异常自动预警</p></div>
+<div class="sc" onclick="showDetail(this,'物料领用：扫码领料自动扣减库存，低于安全库存自动触发补货申请。领用记录与MES工单关联，实现物料消耗精准追溯。','宜搭 + 条码扫描')"><span class="tag">宜搭 + 条码扫描</span><h4>📦 物料领用</h4><p>扫码领料→自动扣减库存→低库存自动补货</p></div>
+</div>
+</div>
+<div class="card">
+<h2><span class="icon">🔬</span> 研发管理</h2>
+<div class="sg">
+<div class="sc" onclick="showDetail(this,'研发项目看板：配方研发/工艺优化项目全生命周期管理。甘特图+看板双视图，里程碑自动提醒，资源冲突预警。','Teambition')"><span class="tag">Teambition</span><h4>📐 研发项目看板</h4><p>配方研发/工艺优化项目全生命周期管理</p></div>
+<div class="sc" onclick="showDetail(this,'实验记录本：结构化实验记录模板，支持附件上传。版本可追溯，符合GLP规范。实验数据自动关联研发项目。','宜搭 + 文档')"><span class="tag">宜搭 + 文档</span><h4>📒 实验记录本</h4><p>结构化实验记录，版本可追溯，符合GLP规范</p></div>
+<div class="sc" onclick="showDetail(this,'配方审批流：多级审批+水印保护，配方文档阅后即焚。防止知识产权泄露，满足外资企业数据安全要求。','审批 + 加密文档')"><span class="tag">审批 + 加密文档</span><h4>🔒 配方审批流</h4><p>多级审批+水印保护，防知识产权泄露</p></div>
+<div class="sc" onclick="showDetail(this,'技术文献库：分类存储技术标准/MSDS/COA/专利文献。全文检索+AI智能问答，权限精细管控。','知识库 + AI搜问')"><span class="tag">知识库 + AI搜问</span><h4>📚 技术文献库</h4><p>分类存储技术标准/MSDS/COA，全文检索</p></div>
+</div>
+</div>
+<div class="card">
+<h2><span class="icon">🛡️</span> EHS合规专项</h2>
+<div class="sg">
+<div class="sc" onclick="showDetail(this,'隐患排查治理：智能填表+审批闭环。隐患照片→整改指派→验收确认→归档统计。月度安全报表自动生成。','智能填表 + 审批')"><span class="tag">智能填表 + 审批</span><h4>🔎 隐患排查治理</h4><p>隐患照片→整改指派→验收确认→归档统计</p></div>
+<div class="sc" onclick="showDetail(this,'危化品台账：宜搭搭建危化品出入库台账，与EHS系统双向同步。满足应急管理部门检查要求。','宜搭 + EHS连接器')"><span class="tag">宜搭 + EHS连接器</span><h4>☣️ 危化品台账</h4><p>出入库台账与EHS系统双向同步</p></div>
+<div class="sc" onclick="showDetail(this,'作业许可管理：动火/受限空间/高处作业许可证线上审批。关联人员资质校验，超时自动作废。','审批 + IoT连接器')"><span class="tag">审批 + IoT连接器</span><h4>📝 作业许可管理</h4><p>线上审批+资质校验+超时作废</p></div>
+</div>
+</div>
+<div id="detailBox" class="demo-area" style="display:none"><h3 id="detailTitle"></h3><p id="detailDesc" style="font-size:.95em;line-height:1.8"></p><p id="detailTech" style="margin-top:12px;font-size:.85em;color:var(--blue);font-weight:600"></p></div>
+</div>
+
+<!-- 降本提效 -->
+<div id="roi" class="section">
+<div class="card">
+<h2><span class="icon">📈</span> 预期收益量化</h2>
+<div class="metrics">
+<div class="mc"><div class="mv">93%</div><div class="ml">审批耗时缩减</div><div class="md">2.5天 → 4小时</div></div>
+<div class="mc"><div class="mv">67%</div><div class="ml">IT工单减少</div><div class="md">月均45件 → 15件</div></div>
+<div class="mc"><div class="mv">93%</div><div class="ml">纸张用量降低</div><div class="md">3000张/月 → 200张/月</div></div>
+<div class="mc"><div class="mv">78%</div><div class="ml">异常响应提速</div><div class="md">45分钟 → 10分钟</div></div>
+<div class="mc"><div class="mv">33%</div><div class="ml">培训周期缩短</div><div class="md">3周 → 2周</div></div>
+<div class="mc"><div class="mv">↑16%</div><div class="ml">EHS巡检完成率</div><div class="md">85% → 99%</div></div>
+</div>
+</div>
+<div class="card">
+<h2><span class="icon">💰</span> 降本提效场景明细</h2>
+<table>
+<tr><th>场景</th><th>钉钉产品</th><th>量化价值</th></tr>
+<tr><td>无纸化办公</td><td>电子签 + 审批</td><td>纸张+打印成本降低80%，签署周期从3天缩至2小时</td></tr>
+<tr><td>智能考勤</td><td>考勤打卡 + 排班</td><td>多班次灵活排班，薪资核算时间从2天缩至2小时</td></tr>
+<tr><td>差旅管控</td><td>阿里商旅 + 审批</td><td>差旅标准内置，超标自动拦截，费用透明可控</td></tr>
+<tr><td>会议提效</td><td>闪记 + AI摘要</td><td>会议纪要自动生成，待办自动提取分发</td></tr>
+<tr><td>知识沉淀</td><td>知识库 + AI搜问</td><td>SOP/故障案例一键检索，新人培训周期缩短40%</td></tr>
+<tr><td>供应商协同</td><td>外部联系人 + 审批</td><td>在线对账/送货预约，响应提速50%</td></tr>
+</table>
+</div>
+</div>
+
+<!-- 实施路线 -->
+<div id="road" class="section">
+<div class="card">
+<h2><span class="icon">🗺️</span> 实施路线图</h2>
+<div class="timeline">
+<div class="ti done"><div class="tp">Phase 1: 基础联通（第1-2月）</div><div class="td">AD域对接钉钉通讯录 + SSO单点登录 · 组织架构对齐 · 核心审批迁移 · 全员培训上线</div></div>
+<div class="ti"><div class="tp">Phase 2: 业务集成（第3-4月）</div><div class="td">SAP/ERP连接器部署联调 · MES生产数据对接 · EHS系统对接 · 宜搭轻应用搭建</div></div>
+<div class="ti"><div class="tp">Phase 3: 深度应用（第5-6月）</div><div class="td">研发项目管理上线 · 生产数据看板部署 · AI助理定制 · 供应商协同门户</div></div>
+<div class="ti"><div class="tp">Phase 4: 持续优化（长期）</div><div class="td">数据驾驶舱建设 · 流程挖掘与优化 · 新场景拓展 · 定期ROI评估</div></div>
+</div>
+</div>
+<div class="card">
+<h2><span class="icon">🤝</span> 为什么选择钉钉</h2>
+<div class="sg">
+<div class="sc"><span class="tag">开放生态</span><h4>🔌 200+系统集成</h4><p>连接器平台预置丰富集成，API开放度高，不绑定单一厂商</p></div>
+<div class="sc"><span class="tag">安全合规</span><h4>🔒 等保三级认证</h4><p>支持数据本地化部署，满足外资企业数据安全与合规要求</p></div>
+<div class="sc"><span class="tag">AI原生</span><h4>🤖 通义千问深度集成</h4><p>AI助理/闪记/搜问等能力开箱即用，赋能智能制造</p></div>
+<div class="sc"><span class="tag">制造业深耕</span><h4>🏭 10万+制造企业</h4><p>服务超10万家制造企业，积累丰富行业最佳实践</p></div>
+<div class="sc"><span class="tag">全球化</span><h4>🌍 多语言多时区</h4><p>支持跨境协同，适配Arxada全球化运营需求</p></div>
+<div class="sc"><span class="tag">成本优势</span><h4>💰 TCO降低40%+</h4><p>一站式平台替代多套系统，总体拥有成本显著降低</p></div>
+</div>
+</div>
+</div>
+
+<div class="footer">奥沙达（Arxada）× 钉钉 数字化解决方案 Demo · 2026年8月3日 · 钉钉解决方案团队</div>
+
+<script>
+function switchTab(id){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');event.target.classList.add('active')}
+
+function showDetail(el,desc,tech){var box=document.getElementById('detailBox');box.style.display='block';document.getElementById('detailTitle').textContent=el.querySelector('h4').textContent;document.getElementById('detailDesc').textContent=desc;document.getElementById('detailTech').textContent='技术方案：'+tech;box.scrollIntoView({behavior:'smooth',block:'nearest'})}
+
+function runSyncDemo(){
+var btn=document.getElementById('syncBtn');btn.disabled=true;btn.textContent='同步中...';
+document.getElementById('syncVisual').style.display='flex';
+document.getElementById('syncLog').style.display='block';
+var log=document.getElementById('syncLog');log.textContent='';
+var steps=[
+{t:0,m:'[09:51:50] 🔍 连接AD域控制器 (dc.arxada-suzhou.local)...'},
+{t:800,m:'[09:51:51] ✅ AD域连接成功，发现 8 个OU组织单元'},
+{t:1600,m:'[09:51:52] 📂 读取OU结构: Arxada Suzhou > 生产部/研发部/EHS部/质量部/供应链/行政/IT/管理层'},
+{t:2400,m:'[09:51:53] 👥 开始同步用户账户... 共 126 个账户'},
+{t:3200,m:'[09:51:54] 🔄 增量同步: 新增 3 人, 变更 5 人, 禁用 1 人'},
+{t:4000,m:'[09:51:55] 📱 写入钉钉通讯录... 部门 8/8 ✅ 人员 126/126 ✅'},
+{t:4800,m:'[09:51:56] 🔐 SSO配置验证: SAML 2.0 IdP元数据已更新'},
+{t:5600,m:'[09:51:57] ✅ 同步完成！耗时 7 秒，下次增量同步将在 5 分钟后自动执行'}
+];
+var progress=document.getElementById('syncProgress');
+var status=document.getElementById('syncStatus');
+var detail=document.getElementById('syncDetail');
+var ddCount=document.getElementById('ddCount');
+steps.forEach(function(s,i){
+setTimeout(function(){
+log.textContent+=s.m+'\n';log.scrollTop=log.scrollHeight;
+var pct=((i+1)/steps.length*100).toFixed(0);
+progress.style.width=pct+'%';
+status.textContent='进度: '+pct+'%';
+if(i>=3){var cnt=Math.min(126,Math.round((i-2)*42));ddCount.textContent=cnt}
+if(i===steps.length-1){
+btn.disabled=false;btn.textContent='重新同步';
+status.textContent='✅ 同步完成';status.style.color='var(--green)';
+detail.textContent='下次同步: 5分钟后自动执行';
+ddCount.textContent='126';
+}
+},s.t);
+});
+}
+
+function runERPDemo(){
+var btn=document.getElementById('erpBtn');btn.disabled=true;btn.textContent='流程执行中...';
+var log=document.getElementById('erpLog');log.style.display='block';log.textContent='';
+var steps=[
+{t:0,m:'[09:52:00] 📋 SAP创建采购订单 PO-2026-0803-001\n   物料: 苯甲酸钠原料 500kg | 金额: ¥87,500\n   供应商: 江苏化工有限公司'},
+{t:1200,m:'[09:52:01] 🔌 连接器捕获SAP事件: PurchaseOrder.Created\n   → 触发钉钉审批流程'},
+{t:2400,m:'[09:52:02] 📱 审批卡片已推送至钉钉\n   审批人: 王经理(采购部) → 李总监(供应链)'},
+{t:3600,m:'[09:52:03] ✅ 王经理在钉钉点击「同意」\n   审批意见: "价格合理，同意采购"'},
+{t:4800,m:'[09:52:04] ✅ 李总监在钉钉点击「同意」\n   审批链完成，耗时 4 秒'},
+{t:6000,m:'[09:52:05] 🔌 审批结果回写SAP\n   PO-2026-0803-001 状态: APPROVED'},
+{t:7200,m:'[09:52:06] 📢 通知已发送:\n   → 申请人张三: "您的采购申请已通过"\n   → 仓库李四: "请准备接收物料 PO-2026-0803-001"\n\n✅ ERP采购审批闭环演示完成！全程 6 秒（实际场景约数分钟）'}
+];
+steps.forEach(function(s){setTimeout(function(){log.textContent+=s.m+'\n';log.scrollTop=log.scrollHeight;if(s===steps[steps.length-1]){btn.disabled=false;btn.textContent='重新演示'}},s.t)});
+}
+
+function runMESDemo(){
+var btn=document.getElementById('mesBtn');btn.disabled=true;btn.textContent='流程执行中...';
+var log=document.getElementById('mesLog');log.style.display='block';log.textContent='';
+var steps=[
+{t:0,m:'[09:53:00] 🚨 MES检测到质量异常!\n   工单: WO-2026-0803-A12 | 批次: B20260803-07\n   异常: pH值超标 (实测7.8, 标准6.5-7.5)\n   产线: 3号反应釜'},
+{t:1000,m:'[09:53:01] 🔌 连接器推送告警至钉钉群「生产车间-异常告警」\n   @班组长赵六 @质量工程师钱七'},
+{t:2000,m:'[09:53:02] 📱 赵六在钉钉查看异常详情\n   关联MES工单数据、历史批次趋势图'},
+{t:3000,m:'[09:53:03] 📝 赵六提交异常处理单:\n   原因: 原料投料顺序偏差\n   措施: 调整pH后复检，隔离当前批次'},
+{t:4000,m:'[09:53:04] ✅ 质量工程师钱七审核通过\n   CAPA编号: CAPA-2026-0803-005'},
+{t:5000,m:'[09:53:05] 🔌 处理结果回写MES:\n   WO-2026-0803-A12 状态: EXCEPTION_RESOLVED\n   批次B20260803-07: 隔离待复检'},
+{t:6000,m:'[09:53:06] 📊 异常记录自动归档至EHS系统\n   月度质量报表将包含本次异常及处理记录\n\n✅ MES异常处理闭环演示完成！响应时间 < 1分钟'}
+];
+steps.forEach(function(s){setTimeout(function(){log.textContent+=s.m+'\n';log.scrollTop=log.scrollHeight;if(s===steps[steps.length-1]){btn.disabled=false;btn.textContent='重新演示'}},s.t)});
+}
+</script>
+</body>
+</html>
